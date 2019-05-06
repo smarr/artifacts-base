@@ -1,0 +1,99 @@
+{
+  "variables": {
+    "vm_description": "Artifact base image with Ubuntu Xenial 64-bit",
+    "vm_version": "0.1.0",
+    "hostname": "artifact",
+    "preseed_path": "preseed.cfg",
+    "disk_size": "40960",
+    "headless": "true", 
+    "name": "artifact-base/xenial64",
+    "vm_name": "artifact-base-xenial64",
+    "cpu_cores": "2",
+    "memory": "6144",
+    "iso_checksum": "16afb1375372c57471ea5e29803a89a5a6bd1f6aabea2e5e34ac1ab7eb9786ac",
+    "iso_checksum_type": "sha256",
+    "iso_url": "http://releases.ubuntu.com/xenial/ubuntu-16.04.6-server-amd64.iso",
+    "ssh_username": "artifact",
+    "ssh_password": "artifact"
+  },
+
+  "builders" : [ {
+    "boot_command": [
+      "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+      "/install/vmlinuz<wait>",
+      " auto<wait>",
+      " console-setup/ask_detect=false<wait>",
+      " console-setup/layoutcode=us<wait>",
+      " console-setup/modelcode=pc105<wait>",
+      " debconf/frontend=noninteractive<wait>",
+      " debian-installer=en_US.UTF-8<wait>",
+      " fb=false<wait>",
+      " initrd=/install/initrd.gz<wait>",
+      " kbd-chooser/method=us<wait>",
+      " keyboard-configuration/layout=USA<wait>",
+      " keyboard-configuration/variant=USA<wait>",
+      " locale=en_US.UTF-8<wait>",
+      " netcfg/get_domain=vm<wait>",
+      " netcfg/get_hostname={{user `preseed_path`}}<wait>",
+      " grub-installer/bootdev=/dev/sda<wait>",
+      " noapic<wait>",
+      " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `preseed_path`}}<wait>",
+      " -- <wait>",
+      "<enter><wait>"
+    ],
+    "boot_wait": "10s",
+    "disk_size": "{{user `disk_size`}}",
+    "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+    "guest_os_type": "Ubuntu_64",
+    "hard_drive_interface": "sata",
+    "hard_drive_nonrotational": true,
+    "hard_drive_discard": true,
+    "headless": "{{ user `headless` }}",
+    "http_directory": "scripts",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "iso_checksum_type": "{{user `iso_checksum_type`}}",
+    "iso_url": "{{user `iso_url`}}",
+    "output_directory": "./builds/{{user `name`}}",
+    "shutdown_command": "echo 'artifact' | sudo -S shutdown -P now",
+    "ssh_password": "{{user `ssh_password`}}",
+    "ssh_port": 22,
+    "ssh_username": "{{user `ssh_username`}}",
+    "ssh_wait_timeout": "10000s",
+    "type": "virtualbox-iso",
+    "vboxmanage": [
+      [
+        "modifyvm",
+        "{{.Name}}",
+        "--memory",
+        "{{ user `memory` }}"
+      ],
+      [
+        "modifyvm",
+        "{{.Name}}",
+        "--cpus",
+        "{{ user `cpu_cores` }}"
+      ]
+    ],
+    "export_opts": [
+      "--manifest",
+      "--vsys", "0",
+      "--description", "{{user `vm_description`}}",
+      "--version", "{{user `vm_version`}}"
+    ],
+    "vm_name": "{{ user `vm_name` }}"
+  } ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'artifact' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "scripts/basic-setup.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
+
