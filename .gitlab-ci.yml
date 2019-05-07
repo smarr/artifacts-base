@@ -10,3 +10,4 @@ build_and_test_job:
     - mv builds/artifact-base/xenial64 ~/artifacts/
     - ls -1sh ~/artifacts/xenial64/
     - cat ~/artifacts/xenial64/artifact-base-xenial64.mf
+    - chmod a+r ~/artifacts/xenial64/*
