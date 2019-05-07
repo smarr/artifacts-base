@@ -36,13 +36,12 @@ EOF
 rm -rf /var/log/unattended-upgrades;
 apt-get -y purge unattended-upgrades;
 
-# Update the package list
-apt-get -y update;
-
-apt-get --no-install-recommends -y install desktop-file-utils dmz-cursor-theme evince file-roller firefox fonts-noto-cjk gpicview gvfs-backends gvfs-fuse indicator-application-gtk2 leafpad libfm-modules light-locker light-locker-settings lightdm-gtk-greeter-settings lubuntu-core lubuntu-default-session lxrandr lxsession-default-apps lxsession-logout lxshortcut lxtask lxterminal xul-ext-ubufox git vim;
-
-# Upgrade all installed packages incl. kernel and kernel headers
-apt-get -y dist-upgrade -o Dpkg::Options::="--force-confnew";
+## Disabled updates, make sure the base iso is recent enough instead
+## Update the package list
+##apt-get -y update;
+#
+## Upgrade all installed packages incl. kernel and kernel headers
+##apt-get -y dist-upgrade -o Dpkg::Options::="--force-confnew";
 
 
 ##
