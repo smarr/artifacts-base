@@ -9,4 +9,4 @@ build_and_test_job:
     - rm -Rf ~/artifacts/xenial64/
     - mv builds/artifact-base/xenial64 ~/artifacts/
     - ls -1sh ~/artifacts/xenial64/
-    - cat builds/artifact-base/xenial64/artifact-base-xenial64.mf
+    - cat ~/artifacts/xenial64/artifact-base-xenial64.mf
