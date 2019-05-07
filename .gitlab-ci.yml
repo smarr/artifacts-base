@@ -6,3 +6,7 @@ build_and_test_job:
   tags: [benchmarks, infinity]
   script:
     - packer build artifact-base-1604.json
+    - rm -Rf ~/artifacts/xenial64/
+    - mv builds/artifact-base/xenial64 ~/artifacts/
+    - ls -1sh ~/artifacts/xenial64/
+    - cat builds/artifact-base/xenial64/artifact-base-xenial64.mf
