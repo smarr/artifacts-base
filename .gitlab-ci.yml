@@ -5,8 +5,6 @@ build_and_test_job:
   stage: build-and-test
   tags: [benchmarks, infinity]
   script:
-    - packer build artifact-base-1604.json
-    - rm -Rf ~/artifacts/xenial64/
-    - mv builds/artifact-base/xenial64 ~/artifacts/
-    - ls -1sh ~/artifacts/xenial64/
-    - chmod a+r ~/artifacts/xenial64/*
+    - make
+    - ls -1sh ~/artifacts/xenial64/ || true
+    - ls -1sh ~/artifacts/bionic64/ || true
