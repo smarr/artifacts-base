@@ -124,3 +124,4 @@ rm -f $HOME_DIR/*.iso;
 ## Set Hostname
 ##
 echo artifact > /etc/hostname
+sed -i 's/preseed/artifact/g' /etc/hosts
